@@ -18,7 +18,7 @@ export default function Home() {
   const searchedValue = useDebounce(search, 1000);
 
   const [filteredData, setFilteredData] = useState(data?.data?.data);
-  console.log(filteredData);
+
   const handleSearch: any = useCallback(
     (data: CategoryItemT, query: string) => {
       if (!data) {
@@ -55,13 +55,21 @@ export default function Home() {
 
       {isLoading && <div className="text-center mt-5">Loading ...!</div>}
 
-      {filteredData?.length > 0
-        ? filteredData?.map((item: CategoryItemT) => (
+      {!!searchedValue ? (
+        filteredData?.length > 0 ? (
+          filteredData?.map((item: CategoryItemT) => (
             <CategoryItem {...item} key={item?.id} />
           ))
-        : data?.data?.data?.map((item: CategoryItemT) => (
-            <CategoryItem {...item} key={item?.id} />
-          ))}
+        ) : (
+          <div className="text-red-500 font-bold text-center my-5 text-2xl">
+            Not Found ..!
+          </div>
+        )
+      ) : (
+        data?.data?.data?.map((item: CategoryItemT) => (
+          <CategoryItem {...item} key={item?.id} />
+        ))
+      )}
     </div>
   );
 }
